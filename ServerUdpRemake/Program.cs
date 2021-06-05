@@ -1,15 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Pipes;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
+using Alchemy;
 namespace ServerUdpRemake
 {
     class Program
@@ -41,7 +37,7 @@ namespace ServerUdpRemake
         private const int MonitorStateOff = 2;
         static void Main(string[] args)
         {
-            SetAsStartupApplication();
+            //SetAsStartupApplication();
             Start();
         }
 
@@ -60,6 +56,19 @@ namespace ServerUdpRemake
             RegistryKey rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             rk.SetValue("Controlling", Application.ExecutablePath);
+        }
+
+        private static IPAddress GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
     }
 }
