@@ -8,8 +8,16 @@ namespace ServerUdpRemake
         {
             switch (message)
             {
-                case "chrome":
+                case "launchChrome":
                     return new ChromeCommand();
+                case "turnOffMonitor":
+                    return new TurnOffMonitorCommand();
+                case "turnOnMonitor":
+                    return new TurnOnMonitorCommand();
+                case "restart":
+                    return new RestartCommand();
+                case "takeDesScreenshot":
+                    return new TakeScreenShotCommand();
                 default:
                     return null;
             }

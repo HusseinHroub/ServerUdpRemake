@@ -1,7 +1,8 @@
-﻿namespace ServerUdpRemake.command
+﻿using Alchemy.Classes;
+namespace ServerUdpRemake.command
 {
     interface Command
     {
-        string Apply(MessagingSocket messagingSocket);
+        void Apply(UserContext context);
     }
 }

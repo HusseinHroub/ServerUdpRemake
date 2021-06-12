@@ -1,74 +1,53 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 using Alchemy;
+using Alchemy.Classes;
+
 namespace ServerUdpRemake
 {
     class Program
     {
         
-        static private IPAddress localIp = GetLocalIPAddress();
-
-        static private Thread lolThread;
-        static private Thread imageThread;
-
-        static public bool exitThread = false;
-
-        static public int counter = 1;
-
-        static public bool passSent = false;
-
-        static public string lolPassword = "";
-
-        //Used to wake the monitor
-        [DllImport("user32.dll")]
-        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
-
-        //usedw to turn off the monitor
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);
-
-        //constants for moving the mouse to wake the monitor and turning off the moniotr
-        private const int MOUSEEVENTF_MOVE = 0x0001;
-        private const int MonitorStateOff = 2;
         static void Main(string[] args)
         {
-            //SetAsStartupApplication();
-            Start();
+            initWebSocketServer();
+            initUDPServer();
         }
 
-        private static void Start()
+        private static void initWebSocketServer()
         {
-            MessagingSocket messagingSocket = new MessagingSocket(22);
+            var aServer = new WebSocketServer(9721, IPAddress.Any)
+            {
+                OnReceive = OnReceive,
+                //OnSend = OnSend,
+                //OnConnected = OnConnect,
+                //OnDisconnect = OnDisconnect,
+                TimeOut = new TimeSpan(0, 5, 0)
+            };
+            aServer.Start();
+        }
+
+        private static void initUDPServer()
+        {
+            MessagingSocket messagingSocket = new MessagingSocket(9722);
             while (true)
             {
-                SocketMessage message = messagingSocket.Receive();
-                CommandFactory.get(message.GetMessage()).Apply(messagingSocket);
+                messagingSocket.ReceiveAndPing();
             }
         }
 
-        private static void SetAsStartupApplication()
+        public static void OnReceive(UserContext context)
         {
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey
-                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            rk.SetValue("Controlling", Application.ExecutablePath);
-        }
-
-        private static IPAddress GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
+            try
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip;
-                }
+            CommandFactory.get(context.DataFrame.ToString()).Apply(context);
+            context.Send(context.DataFrame);
             }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong.");
+            }
         }
+
     }
 }

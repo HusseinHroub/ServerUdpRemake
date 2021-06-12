@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,10 @@
     <Compile Include="CommandFactory.cs" />
     <Compile Include="command\ChromeCommand.cs" />
     <Compile Include="command\Command.cs" />
+    <Compile Include="command\RestartCommand.cs" />
+    <Compile Include="command\TakeScreenShotCommand.cs" />
+    <Compile Include="command\TurnOnMonitorCommand.cs" />
+    <Compile Include="command\TurnOffMonitorCommand.cs" />
     <Compile Include="socket\MessagingSocket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

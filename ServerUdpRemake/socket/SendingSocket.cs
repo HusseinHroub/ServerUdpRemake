@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ServerUdpRemake.socket
 {
-    class SendingSocket : MessagingSocket
+    class SendingSocket
     {
-        public SendingSocket(int portNumber)
+        public SendingSocket()
         {
-           
+          
         }
     }
 }
