@@ -33,13 +33,13 @@ namespace ServerUdpRemake
             SetConsoleCtrlHandler(consoleControlHandler, true);
         }
 
-        public void ReceiveAndPing()
+        public SocketMessage Receive()
         {
             byte[] data = new byte[1024];
             EndPoint remote = (EndPoint) endpoint;
             int dataGram = socket.ReceiveFrom(data, ref remote);
             string message = Encoding.ASCII.GetString(data, 0, dataGram);
-            Send(message, (IPEndPoint)remote);
+            return new SocketMessage(message, ((IPEndPoint)remote).Address);
         }
 
         public void Send(string message, IPEndPoint endpoint)
@@ -47,5 +47,6 @@ namespace ServerUdpRemake
             byte[] byteMessage = Encoding.ASCII.GetBytes(message);
             socket.SendTo(byteMessage, endpoint);
         }
+
     }
 }

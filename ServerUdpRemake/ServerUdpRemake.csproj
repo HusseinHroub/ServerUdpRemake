@@ -58,8 +58,7 @@
     <Compile Include="socket\MessagingSocket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="socket\RecevingSocket.cs" />
-    <Compile Include="socket\SendingSocket.cs" />
+    <Compile Include="socket\MessegingManagment.cs" />
     <Compile Include="socket\SocketMessage.cs" />
   </ItemGroup>
   <ItemGroup>

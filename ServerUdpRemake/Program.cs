@@ -2,6 +2,7 @@
 using System.Net;
 using Alchemy;
 using Alchemy.Classes;
+using ServerUdpRemake.socket;
 
 namespace ServerUdpRemake
 {
@@ -29,10 +30,10 @@ namespace ServerUdpRemake
 
         private static void initUDPServer()
         {
-            MessagingSocket messagingSocket = new MessagingSocket(9722);
+            var messegingManagment = new MessegingManagment(9722, 9622);
             while (true)
             {
-                messagingSocket.ReceiveAndPing();
+                messegingManagment.ReceiveAndPing();
             }
         }
 
@@ -43,9 +44,9 @@ namespace ServerUdpRemake
             CommandFactory.get(context.DataFrame.ToString()).Apply(context);
             context.Send(context.DataFrame);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Something went wrong.");
+                Console.WriteLine("Something went wrong: " + e);
             }
         }
 
