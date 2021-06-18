@@ -1,4 +1,7 @@
 ﻿using Alchemy.Classes;
+using Newtonsoft.Json.Linq;
+using ServerUdpRemake.models;
+using ServerUdpRemake.utils;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,12 +13,13 @@ namespace ServerUdpRemake.command
     class TakeScreenShotCommand : Command
     {
        
-        public void Apply(UserContext context)
+        public void Apply(UserContext context, JObject messageJson)
         {
-            var test = getScreenshotImage();
-            Console.WriteLine(test.Length);
-            context.Send(getScreenshotImage());
-            //context.Send(new byte[] {1, 2, 3, 5});
+            SendUtils.sendAsJson(context,
+                new ImageCommandOutput() { 
+                    type = messageJson["type"].ToString(),
+                    binaryImage= getScreenshotImage()
+                });
         }
 
         private byte[] getScreenshotImage()

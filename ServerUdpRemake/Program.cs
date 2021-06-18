@@ -2,15 +2,19 @@
 using System.Net;
 using Alchemy;
 using Alchemy.Classes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ServerUdpRemake.socket;
 
 namespace ServerUdpRemake
 {
+    
     class Program
     {
         
         static void Main(string[] args)
         {
+            //string output = JsonConvert.SerializeObject(product);
             initWebSocketServer();
             initUDPServer();
         }
@@ -41,8 +45,8 @@ namespace ServerUdpRemake
         {
             try
             {
-            CommandFactory.get(context.DataFrame.ToString()).Apply(context);
-            context.Send(context.DataFrame);
+                var messageJson = JObject.Parse(context.DataFrame.ToString());
+                CommandFactory.get(messageJson["type"].ToString()).Apply(context, messageJson);
             }
             catch (Exception e)
             {

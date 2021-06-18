@@ -52,17 +52,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandFactory.cs" />
+    <Compile Include="command\BasicCommand.cs" />
     <Compile Include="command\ChromeCommand.cs" />
     <Compile Include="command\Command.cs" />
+    <Compile Include="command\GetRAMUsageCommand.cs" />
+    <Compile Include="command\GetCpuUsageCommand.cs" />
     <Compile Include="command\RestartCommand.cs" />
     <Compile Include="command\TakeScreenShotCommand.cs" />
     <Compile Include="command\TurnOnMonitorCommand.cs" />
     <Compile Include="command\TurnOffMonitorCommand.cs" />
+    <Compile Include="models\CPUCommandOutput.cs" />
+    <Compile Include="models\BasicCommandOutput.cs" />
+    <Compile Include="models\ImageCommandOutput.cs" />
     <Compile Include="socket\MessagingSocket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="socket\MessegingManagment.cs" />
     <Compile Include="socket\SocketMessage.cs" />
+    <Compile Include="utils\SendUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

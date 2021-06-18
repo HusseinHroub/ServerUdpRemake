@@ -1,12 +1,15 @@
-﻿using ServerUdpRemake.command;
+﻿using Newtonsoft.Json.Linq;
+using ServerUdpRemake.command;
+using System;
 
 namespace ServerUdpRemake
 {
     class CommandFactory
     {
-        public static Command get(string message)
+        public static Command get(string type)
         {
-            switch (message)
+            Console.WriteLine(type);
+            switch (type)
             {
                 case "launchChrome":
                     return new ChromeCommand();
@@ -16,10 +19,12 @@ namespace ServerUdpRemake
                     return new TurnOnMonitorCommand();
                 case "restart":
                     return new RestartCommand();
-                case "takeDesScreenshot":
+                case "captureDesktopScreenshot":
                     return new TakeScreenShotCommand();
+                case "getCpuUsage":
+                    return new GetCpuUsageCommand();
                 default:
-                    return null;
+                    throw new Exception("Not valid command: " + type);
             }
         }
     }
