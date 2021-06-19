@@ -1,6 +1,6 @@
 ﻿namespace ServerUdpRemake.models
 {
-    class CPUCommandOutput
+    class MonitorCommandOutput
     {
         public string type { get; set; }
         public string value { get; set; }

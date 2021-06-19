@@ -18,7 +18,7 @@ namespace ServerUdpRemake.command
             cpuCounter.NextValue();
             Thread.Sleep(500);
             SendUtils.sendAsJson(context,
-                new CPUCommandOutput() { 
+                new MonitorCommandOutput() { 
                     type = messageJson["type"].ToString(),
                     value = (int)cpuCounter.NextValue() + "%",
                     sequenceId = Convert.ToInt64(messageJson["sequenceId"].ToString()) + 1

@@ -23,6 +23,8 @@ namespace ServerUdpRemake
                     return new TakeScreenShotCommand();
                 case "getCpuUsage":
                     return new GetCpuUsageCommand();
+                case "getMemoryUsage":
+                    return new GetRAMUsageCommand();
                 default:
                     throw new Exception("Not valid command: " + type);
             }

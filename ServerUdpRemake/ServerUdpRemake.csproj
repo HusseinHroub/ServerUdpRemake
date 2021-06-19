@@ -61,7 +61,7 @@
     <Compile Include="command\TakeScreenShotCommand.cs" />
     <Compile Include="command\TurnOnMonitorCommand.cs" />
     <Compile Include="command\TurnOffMonitorCommand.cs" />
-    <Compile Include="models\CPUCommandOutput.cs" />
+    <Compile Include="models\MonitorCommandOutput.cs" />
     <Compile Include="models\BasicCommandOutput.cs" />
     <Compile Include="models\ImageCommandOutput.cs" />
     <Compile Include="socket\MessagingSocket.cs" />
