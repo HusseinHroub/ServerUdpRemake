@@ -14,7 +14,7 @@ namespace ServerUdpRemake.command
     {
         public void Apply(UserContext context, JObject messageJson)
         {
-            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            PerformanceCounter cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
             cpuCounter.NextValue();
             Thread.Sleep(500);
             SendUtils.sendAsJson(context,
