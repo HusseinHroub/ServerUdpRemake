@@ -1,6 +1,5 @@
 ﻿
-
-using Alchemy.Classes;
+using WebSocketSharp;
 using Newtonsoft.Json.Linq;
 using ServerUdpRemake.models;
 using ServerUdpRemake.utils;
@@ -12,12 +11,12 @@ namespace ServerUdpRemake.command
 {
     class GetCpuUsageCommand : Command
     {
-        public void Apply(UserContext context, JObject messageJson)
+        public void Apply(WebSocket webSocket, JObject messageJson)
         {
             PerformanceCounter cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
             cpuCounter.NextValue();
             Thread.Sleep(500);
-            SendUtils.sendAsJson(context,
+            SendUtils.sendAsJson(webSocket,
                 new MonitorCommandOutput() { 
                     type = messageJson["type"].ToString(),
                     value = (int)cpuCounter.NextValue() + "%",

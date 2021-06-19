@@ -1,14 +1,33 @@
 ﻿using System;
-using System.Net;
-using Alchemy;
-using Alchemy.Classes;
-using Newtonsoft.Json;
+using WebSocketSharp;
+using WebSocketSharp.Server;
 using Newtonsoft.Json.Linq;
 using ServerUdpRemake.socket;
+using System.Net;
 
 namespace ServerUdpRemake
 {
-    
+    public class RootBehaviour : WebSocketBehavior
+    {
+        protected override void OnMessage(MessageEventArgs messageEventArgs)
+        {
+            try
+            {
+                Console.WriteLine("okay!");
+                string messageString = messageEventArgs.Data;
+                var messageJson = JObject.Parse(messageString);
+                CommandFactory.get(messageJson["type"].ToString()).Apply(Context.WebSocket, messageJson);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong: " + e);
+            }
+        }
+        protected override void OnOpen()
+        {
+            Console.WriteLine("opened!");
+        }
+    }
     class Program
     {
         
@@ -21,15 +40,10 @@ namespace ServerUdpRemake
 
         private static void initWebSocketServer()
         {
-            var aServer = new WebSocketServer(9721, IPAddress.Any)
-            {
-                OnReceive = OnReceive,
-                //OnSend = OnSend,
-                //OnConnected = OnConnect,
-                //OnDisconnect = OnDisconnect,
-                TimeOut = new TimeSpan(0, 5, 0)
-            };
-            aServer.Start();
+            var wssv = new WebSocketServer(IPAddress.Any, 9721);
+            wssv.AddWebSocketService<RootBehaviour>("/");
+            wssv.Start();
+
         }
 
         private static void initUDPServer()
@@ -38,19 +52,6 @@ namespace ServerUdpRemake
             while (true)
             {
                 messegingManagment.ReceiveAndPing();
-            }
-        }
-
-        public static void OnReceive(UserContext context)
-        {
-            try
-            {
-                var messageJson = JObject.Parse(context.DataFrame.ToString());
-                CommandFactory.get(messageJson["type"].ToString()).Apply(context, messageJson);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Something went wrong: " + e);
             }
         }
 

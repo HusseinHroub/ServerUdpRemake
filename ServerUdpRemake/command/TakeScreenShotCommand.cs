@@ -1,11 +1,11 @@
-﻿using Alchemy.Classes;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ServerUdpRemake.models;
 using ServerUdpRemake.utils;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using WebSocketSharp;
 using System.Windows.Forms;
 
 namespace ServerUdpRemake.command
@@ -13,9 +13,9 @@ namespace ServerUdpRemake.command
     class TakeScreenShotCommand : Command
     {
        
-        public void Apply(UserContext context, JObject messageJson)
+        public void Apply(WebSocket webSocket, JObject messageJson)
         {
-            SendUtils.sendAsJson(context,
+            SendUtils.sendAsJson(webSocket,
                 new ImageCommandOutput() { 
                     type = messageJson["type"].ToString(),
                     binaryImage= getScreenshotImage()

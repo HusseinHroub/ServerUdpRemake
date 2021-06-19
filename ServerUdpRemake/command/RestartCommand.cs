@@ -1,14 +1,13 @@
-﻿using Alchemy.Classes;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics;
+﻿using Newtonsoft.Json.Linq;
+using WebSocketSharp;
 
 namespace ServerUdpRemake.command
 {
     class RestartCommand : Command
     {
-        public void Apply(UserContext context, JObject messageJson)
+        public void Apply(WebSocket webSocket, JObject messageJson)
         {
-            context.Send(context.DataFrame);
+            //context.Send(context.DataFrame);
             //Process.Start("shutdown", "/r /t 0");
         }
     }

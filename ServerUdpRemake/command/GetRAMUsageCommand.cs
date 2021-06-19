@@ -1,18 +1,18 @@
-﻿using Alchemy.Classes;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ServerUdpRemake.models;
 using ServerUdpRemake.utils;
 using System;
+using WebSocketSharp;
 using System.Runtime.InteropServices;
 
 namespace ServerUdpRemake.command
 {
     class GetRAMUsageCommand : Command
     {
-        public void Apply(UserContext context, JObject messageJson)
+        public void Apply(WebSocket webSocket, JObject messageJson)
         {
             int percentOccupiedMemory = getOccupiedMemoryPercentage();
-            SendUtils.sendAsJson(context,
+            SendUtils.sendAsJson(webSocket,
                 new MonitorCommandOutput()
                 {
                     type = messageJson["type"].ToString(),

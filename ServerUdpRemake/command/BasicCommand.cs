@@ -1,19 +1,18 @@
-﻿using Alchemy.Classes;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ServerUdpRemake.models;
 using ServerUdpRemake.utils;
-
+using WebSocketSharp;
 
 namespace ServerUdpRemake.command
 {
     abstract class BasicCommand : Command
     {
-        public void Apply(UserContext context, JObject messageJson)
+        public void Apply(WebSocket webSocket, JObject messageJson)
         {
-            doApply(context);
-            SendUtils.sendAsJson(context, new BasicCommandOutput() { type = messageJson["type"].ToString() });
+            doApply(webSocket);
+            SendUtils.sendAsJson(webSocket, new BasicCommandOutput() { type = messageJson["type"].ToString() });
         }
 
-        abstract protected void doApply(UserContext context);
+        abstract protected void doApply(WebSocket webSocket);
     }
 }

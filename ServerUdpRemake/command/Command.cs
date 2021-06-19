@@ -1,10 +1,10 @@
-﻿using Alchemy.Classes;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using WebSocketSharp;
 
 namespace ServerUdpRemake.command
 {
     interface Command
     {
-        void Apply(UserContext context, JObject messageJson);
+        void Apply(WebSocket webSocket, JObject messageJson);
     }
 }
