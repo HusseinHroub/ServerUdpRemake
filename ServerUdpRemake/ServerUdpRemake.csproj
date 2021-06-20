@@ -55,6 +55,7 @@
     <Compile Include="command\BasicCommand.cs" />
     <Compile Include="command\ChromeCommand.cs" />
     <Compile Include="command\Command.cs" />
+    <Compile Include="command\FileReceiverManagerCommand.cs" />
     <Compile Include="command\GetRAMUsageCommand.cs" />
     <Compile Include="command\GetCpuUsageCommand.cs" />
     <Compile Include="command\RestartCommand.cs" />
