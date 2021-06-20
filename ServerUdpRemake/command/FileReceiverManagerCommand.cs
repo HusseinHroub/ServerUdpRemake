@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using ServerUdpRemake.utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,7 @@ namespace ServerUdpRemake.command
         public void Apply(WebSocket webSocket, JObject messageJson)
         {
             long id = (long) messageJson["id"];
-            Console.WriteLine("received id: " + id);
+            LogUtilty.log("received id: " + id);
             FileStream fileStream;
             if (fileStreams.ContainsKey(id))
             {
@@ -30,7 +31,7 @@ namespace ServerUdpRemake.command
             {
                 fileStream = new FileStream(@"D:\tmp\" + messageJson["fileName"], FileMode.Create, FileAccess.Write);
                 fileStreams.Add(id, fileStream);
-                Console.WriteLine("Created new file stream for location:" + @"D:\tmp\" + messageJson["fileName"]);
+                LogUtilty.log("Created new file stream for location:" + @"D:\tmp\" + messageJson["fileName"]);
             }
             long frame = (long)messageJson["frame"];
             long latestFrame = (long)messageJson["latestFrame"];
@@ -40,7 +41,7 @@ namespace ServerUdpRemake.command
             {
                 fileStream.Close();
                 fileStreams.Remove(id);
-                Console.WriteLine("Closed stream and finished file writing, and removed from map");
+                LogUtilty.log("Closed stream and finished file writing, and removed from map");
             }
 
         }

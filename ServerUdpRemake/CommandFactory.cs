@@ -9,7 +9,6 @@ namespace ServerUdpRemake
         private static Command fileReceiverManagerCommand = new FileReceiverManagerCommand();
         public static Command get(string type)
         {
-            Console.WriteLine(type);
             switch (type)
             {
                 case "launchChrome":
