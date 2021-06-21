@@ -6,7 +6,6 @@ namespace ServerUdpRemake
 {
     class CommandFactory
     {
-        private static Command fileReceiverManagerCommand = new FileReceiverManagerCommand();
         public static Command get(string type)
         {
             switch (type)
@@ -25,8 +24,6 @@ namespace ServerUdpRemake
                     return new GetCpuUsageCommand();
                 case "getMemoryUsage":
                     return new GetRAMUsageCommand();
-                case "fileTransfer":
-                    return fileReceiverManagerCommand;
                 default:
                     throw new Exception("Not valid command: " + type);
             }

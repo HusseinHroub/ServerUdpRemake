@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinaryCommandFactory.cs" />
     <Compile Include="CommandFactory.cs" />
     <Compile Include="command\BasicCommand.cs" />
     <Compile Include="command\ChromeCommand.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="socket\MessegingManagment.cs" />
     <Compile Include="socket\SocketMessage.cs" />
+    <Compile Include="utils\BinaryInfo.cs" />
     <Compile Include="utils\LogUtilty.cs" />
     <Compile Include="utils\SendUtils.cs" />
   </ItemGroup>

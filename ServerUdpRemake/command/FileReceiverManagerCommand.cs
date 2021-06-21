@@ -10,7 +10,7 @@ using WebSocketSharp;
 
 namespace ServerUdpRemake.command
 {
-    class FileReceiverManagerCommand : Command
+    class FileReceiverManagerCommand
     {
         private Dictionary<long, FileStream> fileStreams;
 
@@ -18,8 +18,9 @@ namespace ServerUdpRemake.command
         {
             fileStreams = new Dictionary<long, FileStream>();
         }
-        public void Apply(WebSocket webSocket, JObject messageJson)
+        public void Apply(BinaryInfo binaryInfo)
         {
+            var messageJson = binaryInfo.jsonFormat;
             long id = (long) messageJson["id"];
             LogUtilty.log("received id: " + id);
             FileStream fileStream;
@@ -35,8 +36,8 @@ namespace ServerUdpRemake.command
             }
             long frame = (long)messageJson["frame"];
             long latestFrame = (long)messageJson["latestFrame"];
-            byte[] byteArray = Convert.FromBase64String((string)messageJson["data"]);
-            fileStream.Write(byteArray, 0, byteArray.Length);
+            byte[] binaryData = binaryInfo.binaryData;
+            fileStream.Write(binaryData, binaryInfo.lengthToBody, binaryData.Length - binaryInfo.lengthToBody);
             if (frame == latestFrame)
             {
                 fileStream.Close();

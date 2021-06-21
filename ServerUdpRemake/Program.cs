@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using ServerUdpRemake.socket;
 using System.Net;
 using ServerUdpRemake.utils;
+using System.Text;
 
 namespace ServerUdpRemake
 {
@@ -14,15 +15,41 @@ namespace ServerUdpRemake
         {
             try
             {
-                string messageString = messageEventArgs.Data;
-                var messageJson = JObject.Parse(messageString);
-                CommandFactory.get(messageJson["type"].ToString()).Apply(Context.WebSocket, messageJson);
+                if(messageEventArgs.IsText)
+                {
+                    string messageString = messageEventArgs.Data;
+                    var messageJson = JObject.Parse(messageString);
+                    CommandFactory.get(messageJson["type"].ToString()).Apply(Context.WebSocket, messageJson);
+                } 
+                else if(messageEventArgs.IsBinary)
+                {
+                    byte[] messageBinary = messageEventArgs.RawData;
+                    var binaryInformation = getBinaryInformation(messageBinary);
+                    BinaryCommandFactory.apply(binaryInformation);
+
+                }
+                
             }
             catch (Exception e)
             {
                 LogUtilty.log("Something went wrong: " + e);
             }
         }
+
+        private BinaryInfo getBinaryInformation(byte[] messageBinary)
+        {
+            byte[] sizeInBytes = new byte[4];
+            Array.Copy(messageBinary, sizeInBytes, 4);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(sizeInBytes);
+            var jsonSize = BitConverter.ToInt32(sizeInBytes, 0);
+            Console.WriteLine("Received json size string of: " + jsonSize);
+            var jsonBytes = new byte[jsonSize];
+            Array.Copy(messageBinary, 4, jsonBytes, 0, jsonSize);
+            var jsonFormat = JObject.Parse(Encoding.UTF8.GetString(jsonBytes));
+            return new BinaryInfo() { jsonFormat = jsonFormat, lengthToBody = 4 + jsonSize, binaryData = messageBinary};
+        }
+
         protected override void OnOpen()
         {
             LogUtilty.log("opened!");
@@ -40,7 +67,7 @@ namespace ServerUdpRemake
 
         private static void initWebSocketServer()
         {
-            var wssv = new WebSocketServer(IPAddress.Any, 9721, true);
+            var wssv = new WebSocketServer(IPAddress.Any, 9721);
             wssv.AddWebSocketService<RootBehaviour>("/");
             wssv.Start();
 
