@@ -15,11 +15,12 @@ namespace ServerUdpRemake.command
        
         public void Apply(WebSocket webSocket, JObject messageJson)
         {
-            SendUtils.sendAsJson(webSocket,
-                new ImageCommandOutput() { 
-                    type = messageJson["type"].ToString(),
-                    binaryImage= getScreenshotImage()
-                });
+            webSocket.Send(getScreenshotImage());
+            //SendUtils.sendAsJson(webSocket,
+            //    new ImageCommandOutput() { 
+            //        type = messageJson["type"].ToString(),
+            //        binaryImage= getScreenshotImage()
+            //    });
         }
 
         private byte[] getScreenshotImage()

@@ -21,7 +21,7 @@ namespace ServerUdpRemake.command
         public void Apply(BinaryInfo binaryInfo)
         {
             var messageJson = binaryInfo.jsonFormat;
-            long id = (long) messageJson["id"];
+            long id = (long)messageJson["id"];
             LogUtilty.log("received id: " + id);
             FileStream fileStream;
             if (fileStreams.ContainsKey(id))
