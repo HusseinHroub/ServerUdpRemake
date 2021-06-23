@@ -6,6 +6,8 @@ using ServerUdpRemake.socket;
 using System.Net;
 using ServerUdpRemake.utils;
 using System.Text;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace ServerUdpRemake
 {
@@ -15,20 +17,20 @@ namespace ServerUdpRemake
         {
             try
             {
-                if(messageEventArgs.IsText)
+                if (messageEventArgs.IsText)
                 {
                     string messageString = messageEventArgs.Data;
                     var messageJson = JObject.Parse(messageString);
                     CommandFactory.get(messageJson["type"].ToString()).Apply(Context.WebSocket, messageJson);
-                } 
-                else if(messageEventArgs.IsBinary)
+                }
+                else if (messageEventArgs.IsBinary)
                 {
                     byte[] messageBinary = messageEventArgs.RawData;
                     var binaryInformation = getBinaryInformation(messageBinary);
                     BinaryCommandFactory.apply(binaryInformation);
 
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -47,22 +49,49 @@ namespace ServerUdpRemake
             var jsonBytes = new byte[jsonSize];
             Array.Copy(messageBinary, 4, jsonBytes, 0, jsonSize);
             var jsonFormat = JObject.Parse(Encoding.UTF8.GetString(jsonBytes));
-            return new BinaryInfo() { jsonFormat = jsonFormat, lengthToBody = 4 + jsonSize, binaryData = messageBinary};
+            return new BinaryInfo() { jsonFormat = jsonFormat, lengthToBody = 4 + jsonSize, binaryData = messageBinary };
         }
 
         protected override void OnOpen()
         {
-            LogUtilty.log("opened!");
+            Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
+            {
+                Program.form.phone_id.Text = "Client ON!";
+            });
+        }
+
+        protected override void OnClose(CloseEventArgs e)
+        {
+            Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
+            {
+                Program.form.phone_id.Text = "Client OFF!";
+            });
         }
     }
     class Program
     {
-        
+        public static Form1 form;
+        [STAThread]
         static void Main(string[] args)
         {
-            //string output = JsonConvert.SerializeObject(product);
-            initWebSocketServer();
-            initUDPServer();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            form = new Form1();
+            startWorkers();
+            Application.Run(form);
+
+
+        }
+
+        private static void startWorkers()
+        {
+            new Thread(() =>
+            {
+                initWebSocketServer();
+                initUDPServer();
+            })
+            { IsBackground = true }.Start();
+
         }
 
         private static void initWebSocketServer()
