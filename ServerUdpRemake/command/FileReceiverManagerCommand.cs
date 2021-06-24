@@ -30,7 +30,7 @@ namespace ServerUdpRemake.command
             }
             else
             {
-                fileStream = new FileStream(@"D:\tmp\" + messageJson["fileName"], FileMode.Create, FileAccess.Write);
+                fileStream = new FileStream(@"D:\tmp\okay test\" + messageJson["fileName"], FileMode.Create, FileAccess.Write);
                 fileStreams.Add(id, fileStream);
                 LogUtilty.log("Created new file stream for location:" + @"D:\tmp\" + messageJson["fileName"]);
             }

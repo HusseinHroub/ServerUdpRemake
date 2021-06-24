@@ -46,6 +46,7 @@
             // phone_id
             // 
             this.phone_id.AutoSize = true;
+            this.phone_id.ForeColor = System.Drawing.Color.Red;
             this.phone_id.Location = new System.Drawing.Point(533, 24);
             this.phone_id.Name = "phone_id";
             this.phone_id.Size = new System.Drawing.Size(59, 13);

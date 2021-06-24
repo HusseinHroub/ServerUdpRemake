@@ -57,6 +57,7 @@ namespace ServerUdpRemake
             Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
             {
                 Program.form.phone_id.Text = "Client ON!";
+                Program.form.phone_id.ForeColor = System.Drawing.Color.Green;
             });
         }
 
@@ -65,6 +66,7 @@ namespace ServerUdpRemake
             Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
             {
                 Program.form.phone_id.Text = "Client OFF!";
+                Program.form.phone_id.ForeColor = System.Drawing.Color.Red;
             });
         }
     }
@@ -77,6 +79,7 @@ namespace ServerUdpRemake
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             form = new Form1();
+            form.Text = "Server Brother";
             startWorkers();
             Application.Run(form);
 

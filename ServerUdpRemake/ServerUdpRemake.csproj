@@ -63,6 +63,7 @@
     <Compile Include="command\GetRAMUsageCommand.cs" />
     <Compile Include="command\GetCpuUsageCommand.cs" />
     <Compile Include="command\RestartCommand.cs" />
+    <Compile Include="command\ShutDownCommand.cs" />
     <Compile Include="command\TakeScreenShotCommand.cs" />
     <Compile Include="command\TurnOnMonitorCommand.cs" />
     <Compile Include="command\TurnOffMonitorCommand.cs" />

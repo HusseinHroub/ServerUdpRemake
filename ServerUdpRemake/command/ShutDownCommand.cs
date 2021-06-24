@@ -4,12 +4,12 @@ using WebSocketSharp;
 
 namespace ServerUdpRemake.command
 {
-    class RestartCommand : Command
+    class ShutDownCommand : Command
     {
         public void Apply(WebSocket webSocket, JObject messageJson)
         {
             webSocket.Send(messageJson.ToString());
-            Process.Start("shutdown", "/r /t 0");
+            Process.Start("shutdown", "/s /t 0");
         }
     }
 }

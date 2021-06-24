@@ -9,7 +9,7 @@ namespace ServerUdpRemake.utils
     
     class LogUtilty
     {
-        private static bool isLogEnabled = true;
+        private static bool isLogEnabled = false;
 
         public static void log(String logMessage)
         {
