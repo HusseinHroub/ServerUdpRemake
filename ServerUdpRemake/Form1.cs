@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Windows.Forms;
+using ServerUdpRemake.models;
 
 namespace ServerUdpRemake
 {
@@ -33,6 +30,44 @@ namespace ServerUdpRemake
                 notifyIcon1.Visible = true;
                 Hide();
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            sendTextToClient();
+        }
+
+        private void sendTextToClient()
+        {
+            String textToSend = textBox2.Text;
+            if (textToSend.Trim().Length == 0)
+            {
+                textBox1.Text += "You must type something..\n";
+            }
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(new BasicDataCommandOutput()
+                {
+                    type = "putTextClipCommand",
+                    data = textToSend
+                });
+                Program.sendToPhone(jsonString);
+                textBox2.Text = "";
+            }
+            catch (ClientOfflineException)
+            {
+                textBox1.Text += "Couldn't send text because client is not online..\n";
+            }
+        }
+
+        private void textBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }

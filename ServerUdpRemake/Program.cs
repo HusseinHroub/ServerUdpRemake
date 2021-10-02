@@ -54,6 +54,7 @@ namespace ServerUdpRemake
 
         protected override void OnOpen()
         {
+            handlePhoneConnection();
             Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
             {
                 Program.form.phone_id.Text = "Client ON!";
@@ -61,18 +62,37 @@ namespace ServerUdpRemake
             });
         }
 
+        private void handlePhoneConnection()
+        {
+            if (Program.isWebSocketClosed())
+            {
+                Program.currentPhoneWebSocket = Context.WebSocket;
+            }
+            else
+            {
+                Program.form.textBox1.BeginInvoke((MethodInvoker)delegate
+                {
+                    Program.form.textBox1.Text += "Couldn't connect phone client, already connected\n";
+                });
+            }
+        }
+
+
         protected override void OnClose(CloseEventArgs e)
         {
+            Program.currentPhoneWebSocket = null;
             Program.form.phone_id.BeginInvoke((MethodInvoker)delegate
             {
                 Program.form.phone_id.Text = "Client OFF!";
                 Program.form.phone_id.ForeColor = System.Drawing.Color.Red;
             });
         }
+
     }
     class Program
     {
         public static Form1 form;
+        public static WebSocket currentPhoneWebSocket;
         [STAThread]
         static void Main(string[] args)
         {
@@ -114,5 +134,21 @@ namespace ServerUdpRemake
             }
         }
 
+
+        public static bool isWebSocketClosed()
+        {
+            return currentPhoneWebSocket == null || currentPhoneWebSocket.ReadyState == WebSocketState.Closed || currentPhoneWebSocket.ReadyState == WebSocketState.Closing;
+        }
+        public static void sendToPhone(string textToSend)
+        {
+            if (!isWebSocketClosed())
+            {
+                currentPhoneWebSocket.SendAsync(textToSend, null);
+            }
+            else
+            {
+                throw new ClientOfflineException("Client is offline..");
+            }
+        }
     }
 }

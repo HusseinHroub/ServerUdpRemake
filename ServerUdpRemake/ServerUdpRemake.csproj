@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryCommandFactory.cs" />
+    <Compile Include="ClientOfflineException.cs" />
     <Compile Include="CommandFactory.cs" />
     <Compile Include="command\BasicCommand.cs" />
     <Compile Include="command\ChromeCommand.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="models\BasicDataCommandOutput .cs" />
     <Compile Include="models\MonitorCommandOutput.cs" />
     <Compile Include="models\BasicCommandOutput.cs" />
     <Compile Include="models\ImageCommandOutput.cs" />
